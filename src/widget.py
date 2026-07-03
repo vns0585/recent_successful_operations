@@ -2,14 +2,23 @@ import masks
 from typing import Union
 
 
-def mask_account_card(account_type_and_number: str) -> str:
+def mask_account_card(account_type_and_number: str) -> Union[str, None]:
     """Маскировка информации о счетах и картах в строке"""
-    account = account_type_and_number.split()
-    if account[0].lower() == "счет" or account[0].lower() == "счёт":
-        account[-1] = masks.get_mask_account(account[-1])
+
+    substrings = account_type_and_number.split()
+    if not 2 <= len(substrings) <= 3:
+        return None
+
+    if substrings[0].lower() == "счет" or substrings[0].lower() == "счёт":
+        if not substrings[-1].isdigit() or len(substrings[-1]) < 4:
+            return None
+        substrings[-1] = masks.get_mask_account(substrings[-1])
     else:
-        account[-1] = masks.get_mask_card_number(account[-1])
-    return " ".join(account)
+        if not substrings[0].isalpha() or not substrings[-1].isdigit() or not substrings[-2].isalpha() or len(substrings[-1]) != 16:
+            return None
+        substrings[-1] = masks.get_mask_card_number(substrings[-1])
+
+    return " ".join(substrings)
 
 
 def get_date(date: str) -> Union[str, None]:
