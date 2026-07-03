@@ -1,39 +1,39 @@
 from datetime import datetime
 from typing import Union
 
-import masks
+from . import masks
 
 
 def mask_account_card(account_type_and_number: str) -> Union[str, None]:
     """Маскировка информации о счетах и картах в строке"""
 
     substrings = account_type_and_number.split()
-    if len(substrings) < 2: # Проверяем не пусты ли подстроки с типом и номером счета
+    if len(substrings) < 2:  # Проверяем не пусты ли подстроки с типом и номером счета
         return None
 
     account_number = substrings[-1]
-    if not account_number.isdigit() or len(account_number) < 4: # Проверяем корректность данных номера счета
+    if not account_number.isdigit() or len(account_number) < 4:  # Проверяем корректность данных номера счета
         return None
 
     # Собираем название типа счета, если в нем были символы пробела
     account_type = ""
     for i in range(len(substrings) - 1):
-        if substrings[i].isalpha(): # в типе счета не должно быть цифр
+        if substrings[i].isalpha():  # в типе счета не должно быть цифр
             account_type += substrings[i] + " "
         else:
             return None
 
     # Маскировка в зависимости от типа счета
     if account_type[:4].lower() == "счет" or account_type[:4].lower() == "счёт":
-        return account_type + masks.get_mask_account(account_number)
+        return f"{account_type}{masks.get_mask_account(account_number)}"
     else:
         if len(account_number) != 16:
             return None
-        return account_type + masks.get_mask_card_number(account_number)
+        return f"{account_type}{masks.get_mask_card_number(account_number)}"
 
 
 def get_date(date: str) -> Union[str, None]:
-    """Принимает на вход строку с датой в iso-формате ("2024-03-11T02:26:18.671407") и возвращает строку с датой в формате "ДД.ММ.ГГГГ" ("11.03.2024")"""
+    """Принимает строку с датой в iso-формате и возвращает строку с датой в формате ДД.ММ.ГГГГ"""
     try:
         return datetime.fromisoformat(date).strftime("%d.%m.%Y")
     except ValueError:
