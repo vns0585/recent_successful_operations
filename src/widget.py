@@ -1,5 +1,7 @@
-import masks
+from datetime import datetime
 from typing import Union
+
+import masks
 
 
 def mask_account_card(account_type_and_number: str) -> Union[str, None]:
@@ -31,10 +33,11 @@ def mask_account_card(account_type_and_number: str) -> Union[str, None]:
 
 
 def get_date(date: str) -> Union[str, None]:
-    """Принимает на вход строку с датой в формате "2024-03-11T02:26:18.671407" и возвращает строку с датой в формате "ДД.ММ.ГГГГ" ("11.03.2024")"""
-    if len(date) < 10 or not date[:4].isdigit() or not date[5:7].isdigit() or not date[8:10].isdigit() or date[4] != "-" or date[7] != "-":
+    """Принимает на вход строку с датой в iso-формате ("2024-03-11T02:26:18.671407") и возвращает строку с датой в формате "ДД.ММ.ГГГГ" ("11.03.2024")"""
+    try:
+        return datetime.fromisoformat(date).strftime("%d.%m.%Y")
+    except ValueError:
         return None
-    return ".".join(date[:10].split("-")[::-1])
 
 
 if __name__ == "__main__":
@@ -48,5 +51,3 @@ if __name__ == "__main__":
     print(mask_account_card("Счет 73654108430135874305"))
 
     print(get_date("2024-03-11T02:26:18.671407"))
-
-    print(mask_account_card("Maestro y 596837868705199"))
