@@ -1,4 +1,5 @@
 import masks
+from typing import Union
 
 
 def mask_account_card(account_type_and_number: str) -> str:
@@ -11,6 +12,13 @@ def mask_account_card(account_type_and_number: str) -> str:
     return " ".join(account)
 
 
+def get_date(date: str) -> Union[str, None]:
+    """Принимает на вход строку с датой в формате "2024-03-11T02:26:18.671407" и возвращает строку с датой в формате "ДД.ММ.ГГГГ" ("11.03.2024")"""
+    if len(date) < 10 or not date[:4].isdigit() or not date[5:7].isdigit() or not date[8:10].isdigit() or date[4] != "-" or date[7] != "-":
+        return None
+    return ".".join(date[:10].split("-")[::-1])
+
+
 if __name__ == "__main__":
     print(mask_account_card("Maestro 1596837868705199"))
     print(mask_account_card("Счет 64686473678894779589"))
@@ -20,3 +28,5 @@ if __name__ == "__main__":
     print(mask_account_card("Visa Platinum 8990922113665229"))
     print(mask_account_card("Visa Gold 5999414228426353"))
     print(mask_account_card("Счет 73654108430135874305"))
+
+    print(get_date("2024-03-11T02:26:18.671407"))
