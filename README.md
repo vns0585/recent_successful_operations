@@ -14,30 +14,90 @@
     - Номер счета отображается как `**XXXX` (например: `**1234`).
 4.  **Преобразование форматов дат для корректного отображения на фронтенде**: Переводит iso-формат даты в формат ДД.ММ.ГГГГ (например: 2024-03-11T02:26:18.671407, отобразит как 11.03.2024)
 
+## Структура проекта
+
+Основные модули находятся в директории src/:
+
+- widget.py - функции необходимые для работы виджета
+
+- processing.py - функции для обработки данных
+
+- masks.py - функции для маскировки конфиденциальных данных
+
 ## Установка и использование
 
-Проект еще находится на стадии разработки. Следите за обновлениями.
-
 ### Требования
-- Python 3.13 или выше
-- Poetry 2.0.0 или выше
+- [Python 3.13 или выше](https://www.python.org/downloads/)
+- [Poetry 2.0.0 или выше](https://python-poetry.org/docs/#installation) для управления зависимостями проекта
 
 ### Установка
 1. Клонируйте репозиторий:
 
-'''
+```bash
 git clone https://github.com/vns0585/recent_successful_operations.git
-'''
+cd recent_successful_operations
+```
 
 2. Установите зависимости:
 
-'''
+```bash
 poetry install
-'''
+```
 
 ### Использование
 
-Раздел наполняется.
+Проект находится на стадии разработки, у него пока нет единой точки входа. На данный момент можно импортировать модули проекта и использовать их в своем коде.
+
+1. Импортируйте нужные модули из проекта
+```python
+# Маскировка номера счета и карты
+from src.masks import get_mask_account, get_mask_card_number
+
+# Фильтрация операций по стстоянию и сортировка по дате
+from src.processing import filter_by_state, sort_by_date
+
+# Преобразование даты из iso-формата в ДД.ММ.ГГГГ и маскировка информации о счетах и картах в строке
+from src.widget import get_date, mask_account_card
+```
+2. Примеры использования функций
+- модуль masks
+```python
+# Маскировка номера счета
+masked_account_number = get_mask_account("73654108430135874305")
+
+# Маскировка номера карты
+masked_card_number = get_mask_card_number("7000792289606361")
+```
+- модуль processing
+```python
+operations = [
+                    {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+                    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+                    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+                    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+
+# Фильтрация операций по стстоянию "EXECUTED"             ]
+filtered_operations = filter_by_state(operations)
+
+# Фильтрация операций по прочим состояниям (например, "CANCELED")
+filtered_operations = filter_by_state(operations, "CANCELED")
+
+# Сортировка операций по датам (сначала более новые)
+sorted_operations = sort_by_date(operations)
+
+# Сортировка операций по датам (сначала более старые)
+sorted_operations = sort_by_date(operations, False)
+```
+- модуль widget
+```python
+# Преобразование даты из iso-формата в ДД.ММ.ГГГГ
+readable_date = get_date("2024-03-11T02:26:18.671407")
+
+# Маскировка информации о счетах и картах в строке
+masked_account_string = mask_account_card("Счет 73654108430135874305")
+masked_card_string = mask_account_card("MasterCard 7158300734726758")
+```
+
 
 ## Лицензия
 Этот проект лицензирован по [лицензии MIT](LICENSE).
