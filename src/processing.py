@@ -3,9 +3,9 @@ def filter_by_state(list_of_dict: list, state: str = "EXECUTED") -> list:
     return [item for item in list_of_dict if item["state"] == state]
 
 
-def sort_by_date(list_of_dict: list, ascending: bool = True) -> list:
+def sort_by_date(list_of_dict: list, descending: bool = True) -> list:
     """Возвращает новый список, отсортированный по дате (ключ date), в указанном порядке."""
-    return sorted(list_of_dict, key=lambda item: item["date"], reverse=ascending)
+    return sorted(list_of_dict, key=lambda item: item["date"], reverse=descending)
 
 
 if __name__ == "__main__":
