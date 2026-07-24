@@ -12,7 +12,11 @@ def filter_by_currency(transactions: list[dict], currency: str) -> Iterator[dict
 
 def transaction_descriptions(transactions: list[dict]) -> Iterator[str]:
     """Принимает список словарей с транзакциями и возвращает описание каждой операции по очереди"""
-    if not isinstance(transactions, list) or not all(isinstance(item, dict) for item in transactions) or not transactions:
+    if (
+        not isinstance(transactions, list)
+        or not all(isinstance(item, dict) for item in transactions)
+        or not transactions
+    ):
         raise TypeError("Неверный формат транзакций. Ожидается список словарей.")
     for transaction in transactions:
         if transaction.get("description") is None:
