@@ -69,7 +69,7 @@ poetry add --group dev pytest pytest-cov
 # Маскировка номера счета и карты
 from src.masks import get_mask_account, get_mask_card_number
 
-# Фильтрация операций по стстоянию и сортировка по дате
+# Фильтрация операций по состоянию и сортировка по дате
 from src.processing import filter_by_state, sort_by_date
 
 # Преобразование даты из iso-формата в ДД.ММ.ГГГГ и маскировка информации о счетах и картах в строке
@@ -77,6 +77,9 @@ from src.widget import get_date, mask_account_card
 
 # Генерация номеров банковских карт и фильтрация операций по коду валюты, вывод описаний транзакций
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
+
+# Логирование результатов выполнения функций
+from src.decorators import log
 ```
 2. Примеры использования функций
 - модуль masks
