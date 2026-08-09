@@ -47,7 +47,7 @@ def test_log_error_file() -> None:
 
 
 def test_log_wrong_filename() -> None:
-    @log(1)
+    @log(1)   # type: ignore[arg-type]
     def my_function(x: int, y: int) -> int:
         return x + y
     with pytest.raises(Exception, match="Имя файла должно быть строкового типа"):
