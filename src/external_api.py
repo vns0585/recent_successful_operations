@@ -14,7 +14,7 @@ def convert_currency_to_rub(transaction: dict) -> float:
     try:
         if transaction.get("operationAmount", {}).get("currency", {}).get("code") == "RUB":
             return float(transaction.get("operationAmount", {}).get("amount"))
-    except AttributeError, TypeError, ValueError:
+    except (AttributeError, TypeError, ValueError):
         raise Exception("Неверный формат транзакции")
 
     apikey = os.getenv("API_KEY")
