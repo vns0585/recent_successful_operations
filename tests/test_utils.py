@@ -38,9 +38,9 @@ def test_load_transactions_from_file_not_found() -> None:
 
 def test_load_transactions_from_file_error() -> None:
     with patch("builtins.open", side_effect=Exception()) as mock_builtins_open:
-        result = load_transactions_from_file("test.json")
+        result = load_transactions_from_file("exception.json")
         assert result == []
-        mock_builtins_open.assert_called_once_with("test.json", encoding="utf-8")
+        mock_builtins_open.assert_called_once_with("exception.json", encoding="utf-8")
 
 
 @patch("src.utils.json.load")
