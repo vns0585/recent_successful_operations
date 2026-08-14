@@ -8,10 +8,14 @@ def prepare_transactions(df: pd.DataFrame) -> list:
     """Подготовка транзакций из DataFrame для использования в проекте."""
     try:
 
-        df["id"] = pd.to_numeric(df["id"], errors='coerce').astype('Int64')
+        df["id"] = pd.to_numeric(df["id"], errors='raise').astype('Int64')
         df["id"] = df["id"].where(pd.notna(df["id"]), None)
-        df["date"] = pd.to_datetime(df["date"], errors='coerce').dt.strftime("%Y-%m-%dT%H:%M:%S.%f")
-        df["amount"] = pd.to_numeric(df["amount"], errors='coerce').astype('str').replace('nan', None)
+        df["date"] = pd.to_datetime(
+            df["date"],
+            format="%Y-%m-%dT%H:%M:%SZ",
+            errors='raise'
+        ).dt.strftime("%Y-%m-%dT%H:%M:%S.%f")
+        df["amount"] = pd.to_numeric(df["amount"], errors='raise').astype('str').replace('nan', None)
         df = df.astype(object).where(pd.notna(df), None)
         return [
             {
@@ -34,12 +38,10 @@ def prepare_transactions(df: pd.DataFrame) -> list:
         ]
     except KeyError:
         raise KeyError("Отсутствует колонка с данными.")
-    except (ValueError, TypeError):
-        raise Exception("Ошибка подготовки транзакций.")
-    except AttributeError:
-        raise AttributeError("Некорректный тип данных.")
-    except Exception:
-        raise Exception("Ошибка подготовки транзакций.")
+    except TypeError:
+        raise TypeError("Некорректный тип данных.")
+    except ValueError:
+        raise ValueError("Некорректные данные.")
 
 
 def import_errors(func: Callable) -> Callable:
@@ -60,7 +62,7 @@ def import_errors(func: Callable) -> Callable:
 @import_errors
 def import_from_csv(filename: str) -> list:
     """Импорт транзакций из CSV файла."""
-    return prepare_transactions(pd.read_csv(filename, delimiter=';'))
+    return prepare_transactions(pd.read_csv(filename, delimiter=";"))
 
 
 @import_errors

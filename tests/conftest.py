@@ -1,3 +1,4 @@
+import pandas as pd
 import pytest
 
 
@@ -203,4 +204,142 @@ def transactions_description() -> list[str]:
         "Перевод со счета на счет",
         "Перевод с карты на карту",
         "Перевод организации",
+    ]
+
+
+@pytest.fixture
+def transactions_df() -> pd.DataFrame:
+    data = {
+        'id':
+            {
+                0: '650703', 1: '3598919', 2: '593027', 3: '366176', 4: '5380041'
+            },
+        'state':
+            {
+                0: 'EXECUTED', 1: 'EXECUTED', 2: 'CANCELED', 3: 'EXECUTED', 4: 'CANCELED'
+            },
+        'date':
+            {
+                0: '2023-09-05T11:30:32Z', 1: '2020-12-06T23:00:58Z', 2: '2023-07-22T05:02:01Z',
+                3: '2020-08-02T09:35:18Z', 4: '2021-02-01T11:54:58Z'
+            },
+        'amount':
+            {
+                0: '16210', 1: '29740', 2: '30368', 3: '29482', 4: '23789'
+            },
+        'currency_name':
+            {
+                0: 'Sol', 1: 'Peso', 2: 'Shilling', 3: 'Rupiah', 4: 'Peso'
+            },
+        'currency_code':
+            {
+                0: 'PEN', 1: 'COP', 2: 'TZS', 3: 'IDR', 4: 'UYU'
+            },
+        'from':
+            {
+                0: 'Счет 58803664561298323391', 1: 'Discover 3172601889670065', 2: 'Visa 1959232722494097',
+                3: 'Discover 0325955596714937', 4: ''
+            },
+        'to':
+            {
+                0: 'Счет 39745660563456619397', 1: 'Discover 0720428384694643', 2: 'Visa 6804119550473710',
+                3: 'Visa 3820488829287420', 4: 'Счет 23294994494356835683'
+            },
+        'description':
+            {
+                0: 'Перевод организации', 1: 'Перевод с карты на карту', 2: 'Перевод с карты на карту',
+                3: 'Перевод с карты на карту', 4: 'Открытие вклада'
+            }
+    }
+    df = pd.DataFrame(data)
+    return df
+
+
+@pytest.fixture
+def transaction_imported() -> list:
+    return [
+        {
+            'id': 650703,
+            'state': 'EXECUTED',
+            'date': '2023-09-05T11:30:32.000000',
+            'operationAmount':
+                {
+                    'amount': '16210',
+                    'currency':
+                        {
+                            'name': 'Sol',
+                            'code': 'PEN'
+                        }
+                },
+            'description': 'Перевод организации',
+            'from': 'Счет 58803664561298323391',
+            'to': 'Счет 39745660563456619397'
+        },
+        {
+            'id': 3598919,
+            'state': 'EXECUTED',
+            'date': '2020-12-06T23:00:58.000000',
+            'operationAmount':
+                {
+                    'amount': '29740',
+                    'currency':
+                        {
+                            'name': 'Peso',
+                            'code': 'COP'
+                        }
+                },
+            'description': 'Перевод с карты на карту',
+            'from': 'Discover 3172601889670065',
+            'to': 'Discover 0720428384694643'
+        },
+        {
+            'id': 593027,
+            'state': 'CANCELED',
+            'date': '2023-07-22T05:02:01.000000',
+            'operationAmount':
+                {
+                    'amount': '30368',
+                    'currency':
+                        {
+                            'name': 'Shilling',
+                            'code': 'TZS'
+                        }
+                },
+            'description': 'Перевод с карты на карту',
+            'from': 'Visa 1959232722494097',
+            'to': 'Visa 6804119550473710'
+        },
+        {
+            'id': 366176,
+            'state': 'EXECUTED',
+            'date': '2020-08-02T09:35:18.000000',
+            'operationAmount':
+                {
+                    'amount': '29482',
+                    'currency':
+                        {
+                            'name': 'Rupiah',
+                            'code': 'IDR'
+                        }
+                },
+            'description': 'Перевод с карты на карту',
+            'from': 'Discover 0325955596714937',
+            'to': 'Visa 3820488829287420'},
+        {
+            'id': 5380041,
+            'state': 'CANCELED',
+            'date': '2021-02-01T11:54:58.000000',
+            'operationAmount':
+                {
+                    'amount': '23789',
+                    'currency':
+                        {
+                            'name': 'Peso',
+                            'code': 'UYU'
+                        }
+                },
+            'description': 'Открытие вклада',
+            'from': '',
+            'to': 'Счет 23294994494356835683'
+        }
     ]
