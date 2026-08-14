@@ -1,5 +1,3 @@
-from fileinput import filenamefrom src.generators import card_number_generator
-
 # Виджет последних успешных операций
 
 ## О проекте
@@ -19,6 +17,7 @@ from fileinput import filenamefrom src.generators import card_number_generator
 6. **Преобразование форматов дат для корректного отображения на фронтенде**: Переводит iso-формат даты в формат ДД.ММ.ГГГГ (например: 2024-03-11T02:26:18.671407, отобразит как 11.03.2024)
 7. **Вывод описания транзакций**: Возвращает описание каждой операции по очереди.
 8. **Логирование результатов выполнения функций**: название и статус выполнения интересующей функции можно вывести в консоль или сохранить в указанный файл. Если в процессе выполнения возникнут ошибки, то в логе окажется сообщение об ошибке и параметры с которыми запускалась функция.
+9. **Загрузка операций из файлов в формате JSON, CSV, Excel (XLSX)**
 
 ## Структура проекта
 
@@ -33,6 +32,10 @@ from fileinput import filenamefrom src.generators import card_number_generator
 - generators.py - генераторы данных для работы виджета
 
 - decorators.py - декораторы работы функций, расширяющие их функциональность.
+
+- utils.py - функции для загрузки операций из файлов json
+
+- importers.py - функции для загрузки операций из файлов csv и excel (xlsx)
 
 ## Установка и использование
 
@@ -80,6 +83,12 @@ from src.generators import card_number_generator, filter_by_currency, transactio
 
 # Логирование результатов выполнения функций
 from src.decorators import log
+
+# Загрузка операций из файлов JSON
+from src.utils import load_transactions_from_file
+
+# Загрузка операций из файлов CSV, XLSX
+from importers import import_from_csv, import_from_excel
 ```
 2. Примеры использования функций
 - модуль masks
@@ -182,7 +191,17 @@ def my_function(x, y):
 def my_function(x, y):
     return x + y
 ```
-
+- модуль utils
+```python
+# Загрузка операций из файлов JSON
+transactions = load_transactions_from_file("data/operations.json")
+```
+- модуль importers
+```python
+# Загрузка операций из файлов CSV и XLSX
+transactions = import_from_csv("data/transactions.csv")
+transactions = import_from_excel("data/transaction_excel.xlsx")
+```
 ## Тестирование проекта
 
 ### Общие принципы
