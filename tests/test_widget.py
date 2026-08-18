@@ -87,4 +87,3 @@ def test_get_date_with_invalid_isoformat(date_in_isoformat: str) -> None:
 
 def test_get_date_none() -> None:
     assert get_date(None) == ""
-
