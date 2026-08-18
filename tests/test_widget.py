@@ -59,6 +59,10 @@ def test_mask_account_card_with_invalid_card_number(card_account_number: str) ->
     assert e.value.args[0] == "Номер карты некорректен."
 
 
+def test_mask_account_card_none() -> None:
+    assert mask_account_card(None) == ""
+
+
 @pytest.mark.parametrize(
     "date_in_isoformat, expected",
     [
@@ -79,3 +83,8 @@ def test_get_date_with_invalid_isoformat(date_in_isoformat: str) -> None:
     with pytest.raises(ValueError) as e:
         get_date(date_in_isoformat)
     assert e.value.args[0] == "Некорректный формат даты."
+
+
+def test_get_date_none() -> None:
+    assert get_date(None) == ""
+

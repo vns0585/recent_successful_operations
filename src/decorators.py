@@ -7,8 +7,6 @@ def log(filename: str = '') -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            if not isinstance(filename, str):
-                raise TypeError("Имя файла должно быть строкового типа")
             message = str(func.__name__)
             status = ""
             try:
