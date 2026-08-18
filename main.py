@@ -79,16 +79,13 @@ def main() -> None:
 
     print("\nРаспечатываю итоговый список транзакций...\n")
     print(f"Всего банковских операций в выборке: {len(transactions)}\n")
-    try:
-        if transactions:
-            for transaction in transactions:
-                print(f"{widget.get_date(transaction.get("date"))} {transaction.get("description")}\n"
-                      f"{widget.mask_account_card(transaction.get("from"))} -> "
-                      f"{widget.mask_account_card(transaction.get("to"))}\n"
-                      f"Сумма: {transaction.get("operationAmount", {}).get("amount")} "
-                      f"{transaction.get("operationAmount", {}).get("currency", {}).get("name")}\n")
-    except Exception:
-        print(transaction)
+    if transactions:
+        for transaction in transactions:
+            print(f"{widget.get_date(transaction.get("date"))} {transaction.get("description")}\n"
+                  f"{widget.mask_account_card(transaction.get("from"))} -> "
+                  f"{widget.mask_account_card(transaction.get("to"))}\n"
+                  f"Сумма: {transaction.get("operationAmount", {}).get("amount")} "
+                  f"{transaction.get("operationAmount", {}).get("currency", {}).get("name")}\n")
 
 
 if __name__ == "__main__":
