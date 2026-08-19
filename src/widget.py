@@ -3,8 +3,11 @@ from datetime import datetime
 from src import masks
 
 
-def mask_account_card(account_type_and_number: str) -> str:
+def mask_account_card(account_type_and_number: str | None) -> str:
     """Маскировка информации о счетах и картах в строке"""
+
+    if account_type_and_number is None:
+        return ""
 
     substrings = account_type_and_number.split()
     if len(substrings) < 2:  # Проверяем не пусты ли подстроки с типом и номером счета
@@ -31,8 +34,10 @@ def mask_account_card(account_type_and_number: str) -> str:
         return f"{account_type}{masks.get_mask_card_number(account_number)}"
 
 
-def get_date(date: str) -> str:
+def get_date(date: str | None) -> str:
     """Принимает строку с датой в iso-формате и возвращает строку с датой в формате ДД.ММ.ГГГГ"""
+    if date is None:
+        return ""
     try:
         return datetime.fromisoformat(date).strftime("%d.%m.%Y")
     except ValueError:

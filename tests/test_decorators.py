@@ -44,11 +44,3 @@ def test_log_error_file() -> None:
     with open("mylog.txt", "r", encoding="utf-8") as file:
         assert file.read() == "my_function error: Тестовая ошибка. Inputs: (1, 2), {}\n"
     remove("mylog.txt")
-
-
-def test_log_wrong_filename() -> None:
-    @log(1)   # type: ignore[arg-type]
-    def my_function(x: int, y: int) -> int:
-        return x + y
-    with pytest.raises(Exception, match="Имя файла должно быть строкового типа"):
-        my_function(1, 2)

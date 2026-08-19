@@ -60,12 +60,12 @@ def import_errors(func: Callable) -> Callable:
 
 
 @import_errors
-def import_from_csv(filename: str) -> list:
+def import_from_csv(filename: str = "data/transactions.csv") -> list:
     """Импорт транзакций из CSV файла."""
     return prepare_transactions(pd.read_csv(filename, delimiter=";"))
 
 
 @import_errors
-def import_from_excel(filename: str) -> list:
+def import_from_excel(filename: str = "data/transactions_excel.xlsx") -> list:
     """Импорт транзакций из Excel файла."""
     return prepare_transactions(pd.read_excel(filename))
